@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Probabilidad de Venta</title>
+    <link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.8.95/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../CSS/home.css">
+    <link rel="stylesheet" href="../JS/home.js">
+</head>
+
+<body class="contP">
+    <main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
+        <div class="container">
+           <div class="card">
+
+               <div class="card-header">
+                   <span class="title mt-2 mb-2">Ventas por Llamada</span>
+                   <div class="btn-group float-right" role="group">
+                        <button type="button" class="btn btn-warning mt-2 mb-2" style="color:white">Limpiar</button>
+                        <button type="button"class="btn btn-info mt-2 mb-2">Ejecutar</button>
+                   </div>
+               </div>
+
+               <div class="card-body col-sm-12 row">
+                   <ul class="card-list list-group-flush col-sm-6">
+                       <li class="list-group-item">
+                            Promocion del dia
+                            <input placeholder="Ingrese el nombre Prododucto" type="text" class="form-control">
+                       </li>
+                       <li class="list-group-item">
+                           Precio de la promocion 
+                           <input placeholder="Ingrese el precio del producto" type="number" class="form-control">
+                       </li>
+                       <li class="list-group-item">
+                           Cantidad de Productos 
+                           <input placeholder="Ingrese la cantidad existente" type="number" class="form-control">
+                       </li>
+                       <li class="list-group-item">
+                           Cantidad de llamadas 
+                           <input placeholder="Ingrese las llamadas realizadas" type="number" class="form-control">
+                       </li>
+                   </ul>
+
+                   <div class="col-sm-6">
+                       <div class="grafic">
+                           <div class="graGroup row">
+
+                                <div class="graCont1">
+                                    <div class="">
+                                        <div class="gra1" style="height: 2*'{{value}}';"></div>
+                                        <span>MAX</span>
+                                    </div>
+                                    <!--aqui quiero que la grefica sea de grande segund los resultados dados-->
+                                </div>
+
+                                <div class="graCont">
+                                    <div class="abso">
+                                        <div class="gra2"></div>
+                                        <span>LL-T</span>
+                                    </div>
+                                </div>
+
+                                <div class="graCont">
+                                    <div class="abso">
+                                        <div class="gra3"></div>
+                                        <span>LL-C</span>
+                                    </div>
+                                </div>
+
+                                <div class="graCont">
+                                    <div class="abso">
+                                        <div class="gra4"></div>
+                                        <span>LL-A</span>
+                                    </div>
+                                </div>
+
+                                <div class="graCont">
+                                    <div class="abso">
+                                        <div class="gra5"></div>
+                                        <span>V-M</span>
+                                    </div>
+                                </div>
+
+                                <div class="graCont">
+                                    <div class="abso">
+                                        <div class="gra6"></div>
+                                        <span>V-H</span>
+                                    </div>
+                                </div>
+
+                                <div class="graCont">
+                                    <div class="abso">
+                                        <div class="gra7"></div>
+                                        <span>V-T</span>
+                                    </div>
+                                </div>
+
+                           </div>
+                       </div>
+                   </div>
+               </div>
+
+           </div>
+        </div>
+    </main>
+</body>
