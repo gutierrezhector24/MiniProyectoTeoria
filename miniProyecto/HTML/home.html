@@ -9,40 +9,44 @@
     <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.8.95/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="../CSS/home.css">
-    <link rel="stylesheet" href="../JS/home.js">
+    <!-- <link rel="stylesheet" href="../JS/home.js"> -->
 </head>
 
 <body class="contP">
     <main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
+
         <div class="container">
-           <div class="card">
+            <div id="principal" class="card" style="border: 1px solid black;">
+                <div class="card-body col-sm-12 row">
+                    <ul class="card-list list-group-flush col-sm-6"></ul>
+                        <li class="list-group-item">
+                            Número de llamadas a realizar
+                            <input placeholder="Número de llamadas a realizar" type="number" id="numero-llamadas" class="form-control">
+                        </li>
+                        <li class="list-group-item">
+                            Precio del producto
+                            <input placeholder="Precio del producto" type="number" id="precio-producto" class="form-control">
+                        </li>
+                        <li class="list-group-item">
+                            <button type="button" class="btn btn-info mt-2 mb-2" id="simular" onclick="simular()">Simular</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+           <div id="secundario" class="card" style="display:none;">
 
                <div class="card-header">
                    <span class="title mt-2 mb-2">Ventas por Llamada</span>
                    <div class="btn-group float-right" role="group">
-                        <button type="button" class="btn btn-warning mt-2 mb-2" style="color:white">Limpiar</button>
-                        <button type="button"class="btn btn-info mt-2 mb-2">Ejecutar</button>
+                        <button type="button" class="btn btn-warning mt-2 mb-2" style="color:white" onclick="recargar()">Volver a simular</button>
+                        <!-- <button type="button" class="btn btn-info mt-2 mb-2">Ejecutar</button> -->
                    </div>
                </div>
 
                <div class="card-body col-sm-12 row">
                    <ul class="card-list list-group-flush col-sm-6">
-                       <li class="list-group-item">
-                            Promocion del dia
-                            <input placeholder="Ingrese el nombre Prododucto" type="text" class="form-control">
-                       </li>
-                       <li class="list-group-item">
-                           Precio de la promocion 
-                           <input placeholder="Ingrese el precio del producto" type="number" class="form-control">
-                       </li>
-                       <li class="list-group-item">
-                           Cantidad de Productos 
-                           <input placeholder="Ingrese la cantidad existente" type="number" class="form-control">
-                       </li>
-                       <li class="list-group-item">
-                           Cantidad de llamadas 
-                           <input placeholder="Ingrese las llamadas realizadas" type="number" class="form-control">
-                       </li>
+                       
                    </ul>
 
                    <div class="col-sm-6">
@@ -107,4 +111,6 @@
            </div>
         </div>
     </main>
+
+    <script src="../JS/home.js"></script>
 </body>
