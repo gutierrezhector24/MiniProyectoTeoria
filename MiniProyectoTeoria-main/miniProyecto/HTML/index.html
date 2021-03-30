@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Probabilidad de Venta</title>
+    <link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.8.95/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../CSS/home.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <!-- <link rel="stylesheet" href="../JS/home.js"> -->
+</head>
+
+<body class="contP">
+    <main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
+
+        <div class="container">
+            <div id="principal" class="card" style="border: 1px solid black;">
+                <div class="card-body col-sm-12 row">
+                    <ul class="card-list list-group-flush col-sm-6"></ul>
+                    <li class="list-group-item">
+                        Número de llamadas a realizar
+                        <input placeholder="Número de llamadas a realizar" type="number" id="numero-llamadas"
+                            class="form-control">
+                    </li>
+                    <li class="list-group-item">
+                        Precio del producto
+                        <input placeholder="Precio del producto" type="number" id="precio-producto"
+                            class="form-control">
+                    </li>
+                    <li class="list-group-item">
+                        <button type="button" class="btn btn-info mt-2 mb-2" id="simular"
+                            onclick="abrirModal()">Simular</button>
+                    </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="secundario" class="card" style="display:none;">
+
+                <div class="card-header">
+                    <span class="title mt-2 mb-2">Ventas por Llamada</span>
+                    <div class="btn-group float-right" role="group">
+
+                        <button type="button" class="btn btn-info mt-2 mb-2" style="color:white"
+                            onclick="verLlamadas()">Ver llamadas</button>
+                        
+                        <button type="button" class="btn btn-info mt-2 mb-2" style="color:white"
+                            onclick="verVentas()">Ver ventas</button>
+                
+                        <button type="button" class="btn btn-info mt-2 mb-2" style="color:white"
+                            onclick="verMontos()">Ver montos</button>
+
+                        <button type="button" class="btn btn-warning mt-2 mb-2" style="color:white;"
+                            onclick="recargar()">Volver a simular</button>
+                    </div>
+                </div>
+
+                <div class="card-body col-sm-12 row">
+                    <canvas id="chart-llamadas" width="400" height="400">
+                    </canvas>
+                    <canvas id="chart-ventas" width="400" height="400" style="display: none;">
+                    </canvas>
+                    <canvas id="chart-montos" width="400" height="400" style="display: none;">
+                    </canvas>
+                    <canvas id="chart-llamadas-circular" width="770" height="385" style="display: none;"></canvas>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="modal" class="modal" tabindex="-1">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Seleccione el tipo de gráfica predeterminada</h5>
+                </div>
+                <div class="modal-body">
+
+                  <select class="form-control" name="graficas" id="graficas">
+                      <option value="1">De barras</option>
+                      <option value="2">Circular</option>
+                  </select>
+                </div>
+                <div class="modal-footer" id="ft-modal">
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="ocultarModal()">Cerrar</button>
+                  <button type="button" class="btn btn-info" onclick="simular()">Ir</button>
+                </div>
+              </div>
+            </div>
+          </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="../JS/home.js"></script>
+</body>
