@@ -1,6 +1,14 @@
 var numeroLlamadas = document.getElementById("numero-llamadas");
 var precio = document.getElementById("precio-producto");
 var datos;
+var selectM = document.querySelector('#nn'); 
+var selectN = document.querySelector('#tipo-ejercicios');
+
+var llamadasBarras;
+var ventasBarras;
+var montosBarras;
+
+
 
 function abrirModal() {
    $('#modal').modal('show');
@@ -13,9 +21,10 @@ function ocultarModal() {
 function simular() {
    ocultarModal();
    let tipo = getTipoGrafica();
+   setTipoGrafica(tipo);
    if (comprobarNumeroLlamadas() && comprobarPrecio()) {
       if (esEntero(numeroLlamadas.value)) {
-         datos = hacerCalculos(numeroLlamadas.value, precio.value);
+         datos = hacerCalculos(numeroLlamadas.value, precio.value, selectN.value);
          graficar(numeroLlamadas.value, datos, tipo);
       } else {
          alert("El número de llamadas no puede ser un decimal!");
@@ -29,6 +38,10 @@ function simular() {
 
 function getTipoGrafica() {
    return document.getElementById("graficas").value;
+}
+
+function setTipoGrafica(tipo){
+   $("#nn").val(tipo);
 }
 
 function comprobarNumeroLlamadas() {
@@ -64,22 +77,23 @@ function esEntero(numero) {
    return entero;
 }
 
-function hacerCalculos(llamadas, precio) {
+function hacerCalculos(llamadas, precio, tipoDatos) {
    ocultarPrimario();
    mostrarSecundario();
 
-   let llamadasContestadas = aproximarAEntero(getLlamadasContestadas(llamadas));
-   let llamadasContestadasQueEscuchan = aproximarAEntero(getLlamadasContestadasEscucharPromocion(llamadasContestadas));
-   let contesteMujer = aproximarAEntero(getProbabilidadContesteMujer(llamadasContestadas));
-   let ventaMujer = aproximarAEntero(getProbabilidadVentaMujer(contesteMujer));
+   
+   let llamadasContestadas = aproximarAEntero(getLlamadasContestadas(llamadas, tipoDatos));
+   let llamadasContestadasQueEscuchan = aproximarAEntero(getLlamadasContestadasEscucharPromocion(llamadasContestadas, tipoDatos));
+   let contesteMujer = aproximarAEntero(getProbabilidadContesteMujer(llamadasContestadas, tipoDatos));
+   let ventaMujer = aproximarAEntero(getProbabilidadVentaMujer(contesteMujer, tipoDatos));
 
    let llamadasNoContestadas = llamadas - llamadasContestadas;
    let llamadasContestadasQueNoEscuchan = llamadasContestadas - llamadasContestadasQueEscuchan;
    let contesteHombre = llamadasContestadas - contesteMujer;
-   let ventaHombre = aproximarAEntero(getProbabilidadVentaHombre(contesteHombre));
+   let ventaHombre = aproximarAEntero(getProbabilidadVentaHombre(contesteHombre, tipoDatos));
 
-   let montoVentasMujer = getMontoVentasMujeres(ventaMujer, precio);
-   let montoVentasHombre = getMontoVentasHombres(ventaHombre, precio);
+   let montoVentasMujer = getMontoVentasMujeres(ventaMujer, precio, tipoDatos);
+   let montoVentasHombre = getMontoVentasHombres(ventaHombre, precio, tipoDatos);
 
    let montoVentas = montoVentasMujer + montoVentasHombre;
 
@@ -115,31 +129,47 @@ function hacerCalculos(llamadas, precio) {
    }
 }
 
-function getLlamadasContestadas(llamadas) {
-   return 0.80 * llamadas;
+function getLlamadasContestadas(llamadas, tipoDatos) {
+   if(tipoDatos == 1){
+      return 0.80 * llamadas;
+   }else{
+      return ((Math.random() * (0.80 - 0.60) + 0.60)*llamadas);
+   }
 }
 
-function getLlamadasContestadasEscucharPromocion(llamadasContestadas) {
-   return 0.55 * llamadasContestadas;
+function getLlamadasContestadasEscucharPromocion(llamadasContestadas, tipoDatos) {
+   if(tipoDatos == 1)
+      return 0.55 * llamadasContestadas;
+   else
+      return ((Math.random() * (0.55 - 0.40) + 0.40)*llamadasContestadas);
 }
 
-function getProbabilidadContesteMujer(llamadas) {
-   return 0.65 * llamadas;
+function getProbabilidadContesteMujer(llamadas, tipoDatos) {
+   if(tipoDatos == 1)
+      return 0.65 * llamadas;
+   else
+      return ((Math.random() * (0.65 - 0.50) + 0.50)*llamadas)
 }
 
-function getProbabilidadVentaMujer(llamadasContestadasMujer) {
-   return 0.16 * llamadasContestadasMujer;
+function getProbabilidadVentaMujer(llamadasContestadasMujer, tipoDatos) {
+   if(tipoDatos == 1)
+      return 0.16 * llamadasContestadasMujer;
+   else
+      return ((Math.random() * (0.16 - 0.09) + 0.09)*llamadasContestadasMujer);
 }
 
-function getProbabilidadVentaHombre(llamadasContestadasHombre) {
-   return 0.10 * llamadasContestadasHombre;
+function getProbabilidadVentaHombre(llamadasContestadasHombre, tipoDatos) {
+   if(tipoDatos == 1)
+      return 0.10 * llamadasContestadasHombre;
+   else
+      return ((Math.random() * (0.10 - 0.06) + 0.06)*llamadasContestadasHombre);
 }
 
-function getMontoVentasMujeres(numeroVentasMujer, precio) {
+function getMontoVentasMujeres(numeroVentasMujer, precio, tipoDatos) {
    return numeroVentasMujer * precio;
 }
 
-function getMontoVentasHombres(numeroVentasHombre, precio) {
+function getMontoVentasHombres(numeroVentasHombre, precio, tipoDatos) {
    return numeroVentasHombre * precio;
 }
 
@@ -160,10 +190,16 @@ function aproximarAEntero(numero) {
 }
 
 function graficar(numeroLlamadas, datos, tipo) {
-   tipo == 1 ? graficaDeBarras(numeroLlamadas, datos) : graficaCircular(numeroLlamadas, datos);
+   // tipo == 1 ? graficaDeBarras(numeroLlamadas, datos) : graficaCircular(numeroLlamadas, datos);
+   graficaDeBarras(numeroLlamadas, datos);
+   graficaCircular(numeroLlamadas, datos);
+   tipo == 1 ? mostrarChartLlamadas() : mostrarChartLlamadasCircular();
 }
 
 function graficaDeBarras(numeroLlamadas, datos) {
+
+   let tituloLlamadas = 'Llamadas(' + numeroLlamadas + ')';
+
    let ctxLlamadas = document.getElementById('chart-llamadas').getContext('2d');
    let chartLlamadas = new Chart(ctxLlamadas, {
       type: 'bar',
@@ -171,7 +207,7 @@ function graficaDeBarras(numeroLlamadas, datos) {
          labels: ['Hechas', 'Contestadas', 'NO contestadas', 'Contestadas (escuchan)', 'Contestadas (NO escuchan)'
             , 'Contestadas (hombres)', 'Contestadas (mujeres)'],
          datasets: [{
-            label: 'LLAMADAS',
+            label: tituloLlamadas,
             data: [numeroLlamadas, datos["llamadasContestadas"], datos["llamadasNoContestadas"],
                datos["llamadasContestadasQueEscuchan"], datos["llamadasContestadasQueNoEscuchan"],
                datos["contesteHombre"], datos["contesteMujer"]],
@@ -213,7 +249,7 @@ function graficaDeBarras(numeroLlamadas, datos) {
       data: {
          labels: ['Ventas hechas', 'Ventas (hombres)', 'Ventas (mujeres)'],
          datasets: [{
-            label: 'VENTAS',
+            label: 'VENTAS(' + datos["totalVentas"] + ')',
             data: [datos["totalVentas"], datos["ventaHombre"], datos["ventaMujer"]],
             backgroundColor: [
                'rgba(255, 99, 132, 0.2)',
@@ -270,6 +306,9 @@ function graficaDeBarras(numeroLlamadas, datos) {
          }
       }
    });
+
+
+   // mostrarChartLlamadas();
 }
 
 function graficaCircular(numeroLlamadas, datos) {
@@ -311,36 +350,163 @@ function graficaCircular(numeroLlamadas, datos) {
       data: dataLlamadas
    });
 
-   verLlamadasCircular();
+   // ---------------------------------------------------------------------
 
+   let ctxVentasCircular = document.getElementById("chart-ventas-circular");
+   let dataVentas = {
+      datasets: [{
+         data: [
+            datos["ventaHombre"], datos["ventaMujer"]
+         ],
+         backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)'
+         ],
+         borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)'
+         ],
+         borderWidth: 1
+      }],
+      labels: [
+         'Ventas (hombres)', 'Ventas (mujeres)'
+      ]
+   };
+
+
+   let myPieChartVentas = new Chart(ctxVentasCircular, {
+      type: 'pie',
+      data: dataVentas
+   });
+
+   // -------------------------------------------------------------------
+   let ctxMontosCircular = document.getElementById("chart-montos-circular");
+   let dataMontos = {
+      datasets: [{
+         data: [
+            datos["montoVentasHombre"], datos["montoVentasMujer"]
+         ],
+         backgroundColor: [
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 99, 132, 0.2)'
+         ],
+         borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)'
+         ],
+         borderWidth: 1
+      }],
+      labels: [
+         'Monto (hombres)', 'Monto (mujeres)'
+      ]
+   };
+
+
+   let myPieChartMontos = new Chart(ctxMontosCircular, {
+      type: 'pie',
+      data: dataMontos
+   });
+
+   // mostrarChartLlamadasCircular();
 }
 
 function verVentas() {
-   ocultarChartLlamadas();
-   ocultarMontos();
-   ocultarChartLlamadasCircular();
-   mostrarChartVentas();
+   console.log(selectM.value);
+   llamadasBarras = 0;
+   ventasBarras = 1;
+   montosBarras = 0;
+   if(selectM.value == 1) {
+      ocultarChartLlamadas();
+      ocultarMontos();
+      ocultarChartLlamadasCircular();
+      ocultarChartMontosCircular();
+      ocultarChartVentasCircular();
+      mostrarChartVentas();
+   }else{
+      verVentasCircular();
+   }
 }
 
 function verLlamadas() {
-   ocultarChartVentas();
-   ocultarMontos();
-   ocultarChartLlamadasCircular();
-   mostrarChartLlamadas();
+   console.log(selectM.value);
+   llamadasBarras = 1;
+   ventasBarras = 0;
+   montosBarras = 0;
+   if(selectM.value == 1) {
+      ocultarChartVentas();
+      ocultarMontos();
+      ocultarChartLlamadasCircular();
+      ocultarChartVentasCircular();
+      ocultarChartMontosCircular();
+      mostrarChartLlamadas();
+   }else{
+      verLlamadasCircular();
+   }
 }
 
 function verMontos() {
-   ocultarChartLlamadas();
-   ocultarChartVentas();
-   ocultarChartLlamadasCircular();
-   mostrarMontos();
+   console.log(selectM.value);
+   llamadasBarras = 0;
+   ventasBarras = 0;
+   montosBarras = 1;
+   if(selectM.value == 1) {
+      ocultarChartLlamadas();
+      ocultarChartVentas();
+      ocultarChartLlamadasCircular();
+      ocultarChartVentasCircular();
+      ocultarChartMontosCircular();
+      mostrarMontos();
+   }else{
+      verMontosCircular();
+   }
 }
 
 function verLlamadasCircular() {
-   ocultarChartLlamadas();
-   ocultarChartVentas();
-   ocultarMontos();
-   mostrarChartLlamadasCircular();
+   llamadasBarras = 1;
+   ventasBarras = 0;
+   montosBarras = 0;
+   if(selectM.value == 2){
+      ocultarChartLlamadas();
+      ocultarChartVentas();
+      ocultarMontos();
+      ocultarChartMontosCircular();
+      ocultarChartVentasCircular();
+      mostrarChartLlamadasCircular();
+   }else{
+      verLlamadas();
+   }
+}
+
+function verVentasCircular(){
+   llamadasBarras = 0;
+   ventasBarras = 1;
+   montosBarras = 0;
+   if(selectM.value == 2){
+      ocultarChartLlamadas();
+      ocultarChartVentas();
+      ocultarMontos();
+      ocultarChartLlamadasCircular();
+      ocultarChartMontosCircular();
+      mostrarChartVentasCircular();
+   }else{
+      verVentas();
+   }
+}
+
+function verMontosCircular(){
+   llamadasBarras = 0;
+   ventasBarras = 0;
+   montosBarras = 1;
+   if(selectM.value == 2){
+      ocultarChartLlamadas();
+      ocultarChartLlamadasCircular();
+      ocultarChartVentasCircular();
+      ocultarChartVentas();
+      ocultarMontos();
+      mostrarChartMontosCircular();
+   }else{
+      verMontos();
+   }
 }
 
 function ocultarChartLlamadas() {
@@ -373,4 +539,48 @@ function mostrarChartLlamadasCircular() {
 
 function ocultarChartLlamadasCircular() {
    document.getElementById("chart-llamadas-circular").style.display = "none";
+}
+
+function mostrarChartVentasCircular(){
+   document.getElementById("chart-ventas-circular").style.display = "block";
+}
+
+function ocultarChartVentasCircular(){
+   document.getElementById("chart-ventas-circular").style.display = "none";
+}
+
+function mostrarChartMontosCircular(){
+   document.getElementById("chart-montos-circular").style.display = "block";
+}
+
+function ocultarChartMontosCircular(){
+   document.getElementById("chart-montos-circular").style.display = "none";
+}
+
+selectM.addEventListener('change', actualizar);
+
+function actualizar(e){
+   console.log(llamadasBarras);
+   console.log(ventasBarras);
+   console.log(montosBarras);
+
+   let valorActual = e.target.value;
+   console.log(valorActual);
+   if(valorActual == 1){ //Es gráfica de barras
+      if(llamadasBarras == 1){
+         verLlamadas();
+      }else if(ventasBarras == 1){
+         verVentas();
+      }else{
+         verMontos();
+      }
+   }else{ //Es gráfica circular
+      if(llamadasBarras == 1){
+         verLlamadasCircular();
+      }else if(ventasBarras == 1){
+         verVentasCircular();
+      }else{
+         verMontosCircular();
+      }
+   }
 }

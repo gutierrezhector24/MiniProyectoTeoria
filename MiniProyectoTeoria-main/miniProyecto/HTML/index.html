@@ -42,7 +42,7 @@
             <div id="secundario" class="card" style="display:none;">
 
                 <div class="card-header">
-                    <span class="title mt-2 mb-2">Ventas por Llamada</span>
+                    <span class="title mt-2 mb-2"></span>
                     <div class="btn-group float-right" role="group">
 
                         <button type="button" class="btn btn-info mt-2 mb-2" style="color:white"
@@ -60,13 +60,19 @@
                 </div>
 
                 <div class="card-body col-sm-12 row">
-                    <canvas id="chart-llamadas" width="400" height="400">
+                    <select name="nn" id="nn">
+                        <option value="1">De barras</option>
+                        <option value="2">Circular</option>
+                    </select>
+                    <canvas id="chart-llamadas" width="400" height="400" style="display: none;">
                     </canvas>
                     <canvas id="chart-ventas" width="400" height="400" style="display: none;">
                     </canvas>
                     <canvas id="chart-montos" width="400" height="400" style="display: none;">
                     </canvas>
                     <canvas id="chart-llamadas-circular" width="770" height="385" style="display: none;"></canvas>
+                    <canvas id="chart-ventas-circular" width="770" height="385" style="display: none;"></canvas>
+                    <canvas id="chart-montos-circular" width="770" height="385" style="display: none;"></canvas>
                 </div>
 
             </div>
@@ -76,14 +82,21 @@
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title">Seleccione el tipo de gráfica predeterminada</h5>
+                  <h5 class="modal-title">Seleccione las opciones que más te parezcan</h5>
                 </div>
                 <div class="modal-body">
 
+                  <label for="graficas">Tipo de gráfica</label>
                   <select class="form-control" name="graficas" id="graficas">
                       <option value="1">De barras</option>
                       <option value="2">Circular</option>
                   </select>
+                  <br>  
+                  <label for="tipo-ejercicios">Datos por defecto / Datos aleatorios</label>
+                  <select class="form-control" name="tipo-ejercicios" id="tipo-ejercicios">
+                    <option value="1">Predeterminado</option>
+                    <option value="2">Aleatorio</option>
+                </select>
                 </div>
                 <div class="modal-footer" id="ft-modal">
                   <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="ocultarModal()">Cerrar</button>
